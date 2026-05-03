@@ -27,7 +27,7 @@ def cli() -> Flags | None:
                 assert isinstance(help_test, str)
                 Adonis.PrintInfo(help_test)
             else:
-                Adonis.PrintInfo("")
+                Adonis.PrintInfo("0.3.1")
             sys.exit(0)
         return flag
     else:
