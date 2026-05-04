@@ -1,8 +1,21 @@
-import os, sys
-import cli
+import os
 
 import Adonis
 
+import cli
+
+def printer(message: str, level: str, verbose: bool) -> None:
+    if not verbose:
+        return
+    match level.lower():
+        case "info":
+            Adonis.PrintInfo(message)
+        case "warning":
+            Adonis.PrintWarning(message)
+        case "error":
+            Adonis.PrintError(message)
+        case _:
+            pass
 
 def main():
     flags = cli.cli()
@@ -17,8 +30,8 @@ def main():
     assert isinstance(tobe, str)
 
     if not os.path.exists(flags.cwd):
-        Adonis.PrintError(f"Directory {flags.cwd} does not exist")
-        sys.exit(1)
+        printer(f"Directory {flags.cwd} does not exist", "error", flags.verbose)
+        SystemExit(1)
 
     for root, _, files in os.walk(flags.cwd):
         for file in files:
@@ -35,23 +48,24 @@ def main():
                         content = ''.join([line.replace(was, coloured_to_be, count=-1) for line in r.readlines() if was in line])
                         if not content:
                             continue
-                        Adonis.PrintInfo("Looking at: " + file + f" replacing {was} with {tobe}")
-                        print(content)
+                        printer(f"Looking at: {file} replacing {was} with {tobe}", "info", flags.verbose)
+                        if flags.verbose:
+                            print(content)
                     elif flags.search:
                         if flags.before in r.read():
-                            Adonis.PrintInfo("Is in: " + filepath) 
+                            printer("Is in: " + filepath, "info", flags.verbose)
                     else:
                         contents = r.read()
 
             except Exception as e:
-                Adonis.PrintInfo("Looking at: " + file + f" replacing {was} with {tobe}")
-                Adonis.PrintError(f"[ERROR]: {e}")
+                printer("Looking at: " + file + f" replacing {was} with {tobe}", "info", flags.verbose)
+                printer(f"[ERROR]: {e}", "error", flags.verbose)
                 continue
             
             if not flags.dry_run and not flags.search:
                 with open(filepath, "w") as w:
                     w.write(contents.replace(was, tobe, count=-1))
-                    Adonis.PrintInfo("Updated: " + file + f" replacing {was} with {tobe}")
+                    printer("Updated: " + file + f" replacing {was} with {tobe}", "info", flags.verbose)
 
 if __name__ == "__main__":
     main()

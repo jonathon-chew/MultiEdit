@@ -12,9 +12,9 @@ def cli() -> Flags | None:
     flag.add(["--search", "-s"], "Just search for the string", bool)
     flag.add(["--dry-run", "-d"], "just print what you would change, don't actually change it", bool)
 
-    flag.add(["--help", "-h"], "just print what you would change, don't actually change it", bool)
-    flag.add(["--version", "-V"], "just print what you would change, don't actually change it", bool)
-    flag.add(["--verbose", "-v"], "just print what you would change, don't actually change it", bool)
+    flag.add(["--help", "-h"], "just print what you would change, don't actually change it", bool, default=False)
+    flag.add(["--version", "-V"], "just print what you would change, don't actually change it", bool, default=False)
+    flag.add(["--verbose", "-v"], "just print what you would change, don't actually change it", bool, default=True)
     flag.add(["--quiet", "-q"], "just print what you would change, don't actually change it", bool)
 
     if len(sys.argv) > 1:
