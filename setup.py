@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup (
 	name="MultiEdit",
-	version="v0.1.1",
+	version="v0.1.2",
 	description="",
 	author="Jonathon Chew",
 	author_email="jonchew626@hotmail.com",
