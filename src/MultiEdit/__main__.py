@@ -28,6 +28,7 @@ def cli() -> Flags | None:
                 help_test = flag.help_text_ordered()
                 assert isinstance(help_test, str)
                 Adonis.PrintInfo(help_test)
+                exit(0)
             else:
                 Adonis.PrintInfo("0.3.1")
             sys.exit(0)
@@ -82,7 +83,7 @@ def main():
                         content = ''.join([line.replace(was, coloured_to_be, count=-1) for line in r.readlines() if was in line])
                         if not content:
                             continue
-                        printer(f"Looking at: {file} replacing {was} with {tobe}", "info", flags.verbose)
+                        printer(f"Looking at: {filepath} replacing {was} with {tobe}", "info", flags.verbose)
                         if flags.verbose:
                             print(content)
                     elif flags.search:
@@ -93,11 +94,11 @@ def main():
 
             except Exception as e:
                 if flags.show_errors:
-                    printer("Looking at: " + file + f" replacing {was} with {tobe}", "info", flags.verbose)
+                    printer("Looking at: " + filepath + f" replacing {was} with {tobe}", "info", flags.verbose)
                     printer(f"[ERROR]: {e}", "error", flags.verbose)
                 continue
             
-            if not flags.dry_run and not flags.search:
+            if not flags.dry_run and not flags.search and flags.before in contents:
                 with open(filepath, "w") as w:
                     w.write(contents.replace(was, tobe, count=-1))
                     printer("Updated: " + file + f" replacing {was} with {tobe}", "info", flags.verbose)
